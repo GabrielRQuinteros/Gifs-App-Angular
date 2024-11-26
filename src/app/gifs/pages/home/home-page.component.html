@@ -5,7 +5,9 @@
   </div>
   <div class="col-12 pt-2">
     <!-- Listado de Gifs -->
-     <gifs-card-list></gifs-card-list>
+    <!-- gifs= variable de gifs-card-list | getGifs() metodo del componente actual ( home-page )
+                                            el resultado de getGifs() es inyectarlo en la variable gifs  -->
+     <gifs-card-list [gifs]="getGifs()" ></gifs-card-list>
   </div>
 
 </div>

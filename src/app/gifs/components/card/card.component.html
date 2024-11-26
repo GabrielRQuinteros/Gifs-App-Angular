@@ -1,0 +1,12 @@
+<div class="text-center card mb-2 bg-dark">
+  <!-- <img src='{{ gif.images. }}' class="card-img-top" alt="..."> -->
+  <!-- CUANDO TENGO QUE HACER ESTO DE INSERTAR EN UN STRING EN UN ATIBUTO DE UN ELEMENTO HTML PUEDO USAR "[atributo]=" -->
+
+  <shared-lazy-image
+    [url]="gif.images.downsized_medium.url"
+    [alt]="gif.title || 'No Name'">
+  </shared-lazy-image>
+  <div class="card-body">
+    <p class="card-text text-white text-center"> {{ gif.title || 'No title' }} </p>
+  </div>
+</div>

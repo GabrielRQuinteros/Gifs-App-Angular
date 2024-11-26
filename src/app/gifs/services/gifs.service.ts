@@ -17,8 +17,11 @@ export class GifsService {
   private _gifsList: Gif[] = [];
 
 
-  constructor(private http: HttpClient) { } /// PARA FUNCIONALIDADES AVANZADAS DE PETICIONES HTTP USAMOS ESTE SERVICIO
-                                                   /// Y SE INICIALIZA EN LOS PROVIDERS DE LA app.module.ts, aca se inyectó
+  /// PARA FUNCIONALIDADES AVANZADAS DE PETICIONES HTTP USAMOS ESTE SERVICIO
+  /// Y SE INICIALIZA EN LOS PROVIDERS DE LA app.module.ts, aca se inyectó
+  constructor(private http: HttpClient) {
+    this.loadLocalStorage();
+   }
 
   get tagsHistory():string[] {
     return [...this._tagsHistory]; /// LOS ARRAYS EN JS SE PASAN POR REFERENCIA, ACA DEVUELVO UNA COPIA DEL TAGS HISTORY
@@ -38,8 +41,7 @@ export class GifsService {
 
     this._tagsHistory.unshift( tag ); // GUARDO EL TAG BUSCADO.
     this._tagsHistory= this.tagsHistory.splice( 0, 10 );
-
-
+    this.saveLocalStorage();
   }
 
   public searchTag( searchedTag: string ): void{
@@ -59,15 +61,31 @@ export class GifsService {
     // console.log( page );
     //////////////////////////////////////////////////////////////////////////////////
     this.http.get<SearchResponse>( this.getApiRequest(normalizedTag) )
-              .subscribe( (page)=> {
-                 console.log( page.pagination );
+              .subscribe( (searchResponse)=> {
+                  this._gifsList = searchResponse.data;
               } );
-
 
   }
 
   private getApiRequest( tag: string ): string {
     return `https://api.giphy.com/v1/gifs/search?api_key=${this._apiKey}&q=${tag}&limit=${this._gifsNumberLimit}`;
+  }
+
+
+  get gifsList(): Gif[] {
+    return [...this._gifsList];
+  }
+
+  private saveLocalStorage() {
+    localStorage.setItem( "history", JSON.stringify( this._tagsHistory ) );
+  }
+
+  private loadLocalStorage():void {
+    const historyAsString: string|null = localStorage.getItem("history");
+    if( !historyAsString ) return;
+    this._tagsHistory = JSON.parse( historyAsString );
+    if( this._tagsHistory.length == 0 ) return;
+    this.searchTag(this._tagsHistory[0]);
   }
 
 }

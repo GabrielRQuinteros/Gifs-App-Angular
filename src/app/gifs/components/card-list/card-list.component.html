@@ -1,13 +1,8 @@
 <div class="row">
-  <div class="col-md-3 col-sm-6">
-    <div class="text-center card mb-2 bg-dark">
 
-      <!-- TODO: Imagen de la card -->
+  <gif-card *ngFor="let gif of gifs"
+            [gif]="gif"
+            class="col-md-3 col-sm-6"
+            ></gif-card>
 
-      <div class="card-body">
-        <p class="card-text text-white"> HOLA MUNDO </p>
-      </div>
-
-    </div>
-  </div>
 </div>
